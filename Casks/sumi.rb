@@ -16,5 +16,11 @@ cask "sumi" do
                    args: ["-cr", "#{appdir}/Sumi.app"]
   end
 
-  zap trash: "~/.sumi"
+  zap trash: [
+    "~/.sumi",
+    "~/Library/Caches/com.sumivoice.app",
+    "~/Library/Caches/sumi",
+    "~/Library/WebKit/com.sumivoice.app",
+    "~/Library/WebKit/sumi",
+  ]
 end
