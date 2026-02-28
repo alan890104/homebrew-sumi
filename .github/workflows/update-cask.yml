@@ -1,0 +1,50 @@
+name: Update Cask
+
+on:
+  repository_dispatch:
+    types: [update-cask]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "New version (e.g. 0.4.0)"
+        required: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=${{ github.event.client_payload.version }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download DMG and compute SHA256
+        id: sha
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          curl -sL "https://github.com/alan890104/sumi/releases/download/v${VERSION}/Sumi_${VERSION}_aarch64.dmg" -o sumi.dmg
+          SHA=$(shasum -a 256 sumi.dmg | awk '{print $1}')
+          echo "sha256=${SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Update Cask
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          SHA="${{ steps.sha.outputs.sha256 }}"
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" Casks/sumi.rb
+          sed -i "s/sha256 \".*\"/sha256 \"${SHA}\"/" Casks/sumi.rb
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          VERSION="${{ steps.version.outputs.version }}"
+          git add Casks/sumi.rb
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Update Sumi to v${VERSION}"
+          git push
