@@ -24,7 +24,7 @@ brew uninstall --cask sumi
 To also remove user data and caches:
 
 ```bash
-brew zap --cask sumi
+brew uninstall --cask --zap sumi
 ```
 
 ## Requirements
