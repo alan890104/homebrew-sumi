@@ -1,6 +1,6 @@
 cask "sumi" do
-  version "0.5.2"
-  sha256 "4b960cb149cb95a68a4d9bd084edfc902f25bac7eff57d1af1c328dd8c5c2f6c"
+  version "0.5.5"
+  sha256 "c0f0471cd584d4e59f5cd6ebdb04d90ebc854a74e5410438c9957ccc8fcf79a8"
 
   url "https://github.com/alan890104/sumi/releases/download/v#{version}/Sumi_#{version}_aarch64.dmg"
   name "Sumi"
