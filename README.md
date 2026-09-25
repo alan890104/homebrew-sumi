@@ -18,8 +18,7 @@ Press a hotkey anywhere. Speak. Text pastes at your cursor — rewritten by an L
 ## Installation
 
 ```bash
-brew tap alan890104/sumi
-brew install --cask sumi
+brew install --cask alan890104/sumi/sumi
 ```
 
 > **Requirements:** macOS · Apple Silicon (arm64) · [Homebrew](https://brew.sh/)
